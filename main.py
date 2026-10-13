@@ -23,7 +23,20 @@ jokes = [
     "Why can't leopards play hide-and-seek?",
     "What's blue and doesn't weigh very much?",
     "Did you know that dogs can't operate the MRI machine? On the other hand, though...",
-    "Why shouldn't you trust atoms?"
+    "Why shouldn't you trust atoms?",
+    "Where did I store these dad jokes?",
+    "I'm addicted to brake fluid, but it's OK... You know why?",
+    "You know why a deer can jump higher than an average house?",
+    "What do you say to a llama that loves picnicking?",
+    "A photon checks into a hotel. The front desk asks if it has any luggage. It replies...",
+    "Why did the scarecrow get an award?",
+    "Why do people love Switzerland?",
+    "Why did the time-looper break the clock?",
+    "Woah, that's a big tree. You could even say it's a...",
+    "Why don't people use broken pencils?",
+    "I stayed up all night to see where the sun went...",
+    "What do you call a dinosaur with an extensive vocabulary?",
+    "What happens to nitrogen when the sun rises?"
     ]
 punchlines_in = [
     "pink fluff", #called for verifying input
@@ -47,7 +60,20 @@ punchlines_in = [
     "because they're always spotted",
     "light blue",
     "catscan",
-    "they make up everything"
+    "they make up everything",
+    "dadabase",
+    "you can stop at any time",
+    "houses can't jump",
+    "alpaca lunch",
+    "travelling light",
+    "outstanding",
+    "flag is a big plus",
+    "kill time",
+    "treemendous",
+    "pointless",
+    "dawned on me",
+    "thesaurus",
+    "daytrogen"
     ]
 punchlines_out = [
     "Pink fluff!", #called & sent as text
@@ -71,7 +97,20 @@ punchlines_out = [
     "Because they're always spotted!",
     "Light blue, of course!",
     "CATScan!",
-    "Because they make up everything!"
+    "Because they make up everything!",
+    "A Dadabase! (I didn't but shh)",
+    "Because I can stop at any time!",
+    "Because a house can't jump, dummy!",
+    "Alpaca lunch!",
+    "'No, I'm travelling light.'",
+    "It was outstanding in it's field!",
+    "Well, it's flag was a big plus!",
+    "He had a lot of time to kill...",
+    "TREEmendous tree!",
+    "It's pointless!",
+    "...but then it dawned on me.",
+    "A thesaurus!",
+    "It becomes daytrogen!"
     ]
 
 #variables
@@ -87,7 +126,8 @@ rounds = 0
 print('Welcome to "Guess the Punchline" game! \n'
       'You will "hear" a joke and try to guess the punchline. \n'
       'Type your answer and press Enter. Type "quit" to exit the game.\n'
-      'Fair warning, this is hyperspecific like most puns are :)\n')
+      'Fair warning, this is hyper-specific like most puns are :)\n'
+      "Oh by the way you can press enter to skip if you don't know the answer. But shhh-\n")
 
 # gamemode system
 # no pycharm I did NOT misspell that
@@ -103,13 +143,13 @@ if gm == 'n':
         valid_rounds = False
         while not valid_rounds:
             try:
-                rounds = int(input("Please enter the number of rounds you want: "))
+                round_no = int(input("Please enter the number of rounds you want: "))
                 valid_rounds = True
             except ValueError:
                 print("...That's not a number. Try again?")
     # if rounds isn't set... well, we don't have other options ;-;
     else:
-        rounds = 10
+        round_no = 10
         gm = 'set'
         print("Uh, we don't have more gamemodes... \nLet's play for 10 rounds!")
 else:
@@ -118,6 +158,9 @@ else:
 
 if gm == 'repeat':
     while game_on: #keeps the below looping until game_on is set to false
+        if rounds == 0:
+            print()
+
         #takes random numbers until the new random number is different from the prev
         #this is to avoid repeats
         while next_random == random_number or next_random == last_random:
@@ -134,7 +177,7 @@ if gm == 'repeat':
         guess = guess.strip()
 
         #maps each joke to a punchline which is why random_number had to be a thing
-        if guess == punchlines_in[random_number]:
+        if punchlines_in[random_number] in guess:
             print("Wow! You got it!\n")
             points += 10
         else:
@@ -145,6 +188,11 @@ if gm == 'repeat':
             print(f"{int(points/10)} punchlines guessed correctly! Keep going, you're doing great!")
 
         guess = input('Press [Enter] to continue or type "quit" to quit\n').lower()
+
+        #this adds points if you correct the program in very specific ways. which is also why it's an easter egg :)
+        if guess == "hey i got that right" or guess == 'i got that right' or guess == 'you marked me wrong':
+            points += 10
+            print("Oops... I'll trust you on that one ≖_≖ ")
 
         #this ends the while loop if the user said "quit"
         if guess == "quit":
@@ -158,7 +206,9 @@ if gm == 'repeat':
             elif points/rounds <= 0.5: #if <=50% of the questions are right
                 print("Good job! You got some of the jokes right! Keep practicing!")
 elif gm == 'set':
-    for i in range(rounds):
+    for i in range(round_no):
+        if i == 0:
+            print()
         # makes sure no repeats for 2 questions
         while next_random == random_number or next_random == last_random:
             next_random = randint(0, len(jokes) - 1)
@@ -166,8 +216,7 @@ elif gm == 'set':
         random_number = next_random
 
         # adds a round
-        rounds += 1
-        print(f"Round {rounds}!")
+        print(f"Round {i+1}!")
         # uses random number to select a joke
         print(jokes[random_number])
         guess = input("").lower()
@@ -175,20 +224,25 @@ elif gm == 'set':
 
         # maps each joke to a punchline which is why random_number had to be a thing
         # look in hindsight I could have used a dictionary or something but shhhhhh
-        if guess == punchlines_in[random_number]:
+        if punchlines_in[random_number] in guess:
             print("Wow! You got it!\n")
             points += 10
         else:
             print(punchlines_out[random_number])
-        
-        # mostly for consistency reasons... forwards the game on any user input
-        input('Press [Enter] to continue\n')
 
-    print(f"\n{rounds} rounds over! Let's see how you did...")
+        # mostly for consistency reasons... forwards the game on any user input
+        guess = input('Press [Enter] to continue\n').lower()
+
+        #...and also the easter egg. yes.
+        if guess == "hey i got that right" or guess == 'i got that right' or guess == 'you marked me wrong':
+            points += 10
+            print("Oops... I'll trust you on that one ≖_≖ ")
+
+    print(f"\n{round_no} rounds over! Let's see how you did...")
     print(f"You got {points} points this round!")
 
     # points stuff
-    if points / rounds > 0.5:  # if >50% of the questions are right
+    if points / round_no > 0.5:  # if >50% of the questions are right
         print("Hey, you got most of the jokes right! Great job!")
-    elif points / rounds <= 0.5:  # if <=50% of the questions are right
+    elif points / round_no <= 0.5:  # if <=50% of the questions are right
         print("Good job! You got some of the jokes right! Keep practicing!")
